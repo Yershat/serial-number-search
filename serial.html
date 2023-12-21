@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Website</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  </head>
+  <body>
+    <!-- Loading logo -->
+    <div id="loading-logo" style="display: none">Loading...</div>
+
+    <input type="text" id="serialInput" placeholder="Enter Serial Number" />
+    <button onclick="fetchData()">Get Value</button>
+    <div id="result"></div>
+
+    <script>
+      function fetchData() {
+        // Show loading logo
+        $("#loading-logo").show();
+
+        var serialNumber = document.getElementById("serialInput").value;
+
+        // Fetch data from the Google Apps Script web app
+        fetch(
+          "https://script.google.com/macros/s/AKfycbychVlhUyKTj-aevPpxBGFTjAciZV-8_vA2ejBHUt5WP6hpN--Nv0NrER4nZOJT_Scf7Q/exec?serial=" +
+            encodeURIComponent(serialNumber)
+        )
+          .then((response) => response.text())
+          .then((data) => {
+            // Hide loading logo
+            $("#loading-logo").hide();
+
+            // Display the result
+            document.getElementById("result").innerText = data;
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+            // Hide loading logo on error
+            $("#loading-logo").hide();
+          });
+      }
+    </script>
+  </body>
+</html>
